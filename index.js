@@ -9,26 +9,29 @@ const db = new pg.Client({
   user: "postgres",
   host: "localhost",
   database: "world",
-  password: "123456",
-  port: 5432,
+  password: "root",
+  port: "5432",
 });
 
 db.connect();
 
 let quiz = [
-  { country: "France", capital: "Paris" },
-  { country: "United Kingdom", capital: "London" },
-  { country: "United States of America", capital: "New York" },
+  // { country: "India", capital: "Delhi" },
+  // { country: "France", capital: "Paris" },
+  // { country: "United Kingdom", capital: "London" },
+  // { country: "United States of America", capital: "New York" },
 ];
+
 
 db.query("SELECT * FROM capitals", (err, res) => {
   if (err) {
-    console.error("Error executing query", err.stack);
-  } else {
+    console.error("Error Executing querry: ", err.stack);
+  }
+  else {
     quiz = res.rows;
   }
   db.end();
-});
+})
 
 let totalCorrect = 0;
 
@@ -48,7 +51,7 @@ app.get("/", async (req, res) => {
 
 // POST a new post
 app.post("/submit", (req, res) => {
-  let answer = req.body.answer.trim();
+  let answer = req.body.answer.trim(); // _123 45_ = 123 45
   let isCorrect = false;
   if (currentQuestion.capital.toLowerCase() === answer.toLowerCase()) {
     totalCorrect++;
